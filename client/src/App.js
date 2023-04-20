@@ -10,7 +10,7 @@ function App() {
   const [data, setData] = useState([{}])
 
   useEffect(() => {
-    fetch('/username').then(
+    fetch('/wishMe').then(
       data => {
         setData(data)
         console.log(data)
@@ -18,6 +18,15 @@ function App() {
       
     )
   }, [])
+
+  // async function loadGames() {
+  //   const response = await fetch('/wishMe');
+  //   // fetch() timeouts at 300 seconds in Chrome
+  //   const games = await response.json();
+  //   return games;
+  // }
+
+  // loadGames()
 
   return(
     <div className="App">

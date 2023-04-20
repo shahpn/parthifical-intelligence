@@ -11,6 +11,7 @@ import time
 import tkinter
 import webbrowser
 from urllib.request import urlopen
+import asyncio
 
 import feedparser
 import pyjokes
@@ -39,7 +40,10 @@ app = Flask(__name__)
 def speak(audio):
 	engine.say(audio)
 	engine.runAndWait()
-	engine.endLoop()
+	return
+
+def stop():
+	engine.stop()
         
 def takeCommand():
 	
@@ -63,36 +67,57 @@ def takeCommand():
 	
 	return query
 
-# @app.route('/wishMe')
-# def wishMe():
-# 	hour = int(datetime.datetime.now().hour)
-# 	if hour>= 0 and hour<12:
-# 		speak("Good Morning !")
+@app.route('/wishMe')
+def wishMe():
+	hour = int(datetime.datetime.now().hour)
+	if hour>= 0 and hour<12:
+		speak("Good Morning !")
 
-# 	elif hour>= 12 and hour<18:
-# 		speak("Good Afternoon !")
+	elif hour>= 12 and hour<18:
+		print('pre nut dellusions')
+		speak("Good Afternoon !")
+		# engine.runAndWait()
+		# time.sleep(3)
+		# engine.runAndWait()
 
-# 	else:
-# 		speak("Good Evening !")
+		print('post nut clarity')
+		# engine.runAndWait()
+		# time.sleep(5000)
+		speak("469 makes me happy")
+		# engine.runAndWait()
+		# time.sleep(1)
+		# engine.runAndWait()
 
-# 	assname =("Pa ram")
-# 	speak("I'm your personal assistant")
-# 	speak(assname)
-# 	return 'Wished!'
+		print('Splooge cleanup')
+		stop()
+		# engine.say("I am your personal assistant")
+		# engine.runAndWait()
+		
+	else:
+		speak("Good Evening !")
+
+	assname = "Pa ram"
+	# engine.runAndWait()
+	# speak("I am your personal assistant")
+	# speak(assname)
+	engine.stop()
+	return 'Wished!'
 
 @app.route('/username')
 def username():
-    speak("What should i call you?")
-    uname = takeCommand()
-    speak("Welcome ")
-    speak(uname)
-    columns = shutil.get_terminal_size().columns
+	engine.say("What should i call you?")
+    # uname = takeCommand()
+	engine.say("Welcome dude")
+    # engine.say(uname)
+	columns = shutil.get_terminal_size().columns
     
-    print("#####################".center(columns))
-    print("Hey! hows it going, ", uname.center(columns))
-    print("#####################".center(columns))
+    # print("#####################".center(columns))
+    # print("Hey! hows it going, ", uname.center(columns))
+    # print("#####################".center(columns))
     
-    speak("Hows it hanging?")
+	engine.say("Hows it hanging?")
+    
+	engine.runAndWait()
 
 
 

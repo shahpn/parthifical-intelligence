@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+    <title>PARAM</title>
+</head>
+<body>
+    <main>
+        <div id="mainWindow" class="mainWindow">
+            <div id="facePanel" class="facePanel">
+                <div id="face" class="face">
+                    <div id="leftEye" data-staring="false" class="eye leftEye"></div>
+                    <div id="rightEye" data-staring="false" class="eye rightEye"></div>
+                    <div id="mouth" class="mouth">
+                        <img id="smile" class="smile" src="smile.svg">
+                        <img id="mouthWave1" class="mouthWave" src="wave.svg" />
+                        <img id="mouthWave2" class="mouthWave" src="wave.svg" />
+                        <img id="mouthWave3" class="mouthWave" src="wave.svg" />
+                        <img id="mouthWave4" class="mouthWave" src="wave.svg" />
+                    </div>
+                </div>
+            </div>
+            <div id="leftPanel" class="panel leftPanel">
+                <button id="colorMode" class="button">Dark Mode</button>
+                <button id="scaryMode" class="button">Scary Mode</button>
+            </div>
+            <div id="rightPanel" class="panel rightPanel"></div>
+            <div id="textPanel" class="textPanel">
+                <div id="messages" class="messages">
+                </div>
+                <div id="userInput" class="userInput">
+                    <input id="inputText" class="inputText"/>
+                    <button id="enterButton" class="enterButton"></button>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
