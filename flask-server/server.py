@@ -119,7 +119,9 @@ def username():
     
 	engine.runAndWait()
 
-
+@app.route('/test')
+def test():
+	return 'test'
 
 # def speak(audio):
 # 	engine.say(audio)

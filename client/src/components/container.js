@@ -1,4 +1,5 @@
 // import '../scripts/scripts.js'
+import React, { useState, useEffect } from 'react';
 import smile from '../assets/smile.svg';
 import wave from '../assets/wave.svg';
 import realisticEye from '../assets/realisticEye.png';
@@ -65,7 +66,10 @@ const Container = () => {
         inputText.disabled = true;
     
         var response;
-        response = "My name is PARAM, and I am an example of \"Parthificial Intelligence.\" This type of AI is based on the niche micro-celebrity you all know and love: \"Parth Shah,\" which means that my intelligence is modeled after his.";
+        
+        
+
+        // response = "My name is PARAM, and I am an example of \"Parthificial Intelligence.\" This type of AI is based on the niche micro-celebrity you all know and love: \"Parth Shah,\" which means that my intelligence is modeled after his.";
         let index = 0;
     
         const typingInterval = setInterval(function() {
@@ -109,6 +113,21 @@ const Container = () => {
             addUserMessage();
         }
     }
+
+    const [data, setData] = useState([{}]);
+
+    useEffect(() => {
+        fetch('/test').then(
+            data => {
+            setData(data)
+            // addUserMessage()
+            }
+            
+        )
+        }, [])
+
+        // response = data;
+
         
 
     return (
@@ -141,7 +160,7 @@ const Container = () => {
                     </div>
                     <div id="userInput" class="userInput">
                         <input id="inputText" class="inputText" onKeyDown={enterPress}/>
-                        <button id="enterButton" class="enterButton" onClick={addUserMessage}></button>
+                        <button id="enterButton" class="enterButton" onClick={addBotMessage}></button>
                     </div>
             </div>
         </div>
