@@ -1,9 +1,9 @@
 // import '../scripts/scripts.js'
-import React, { useState, useEffect } from 'react';
-// import smile from '../assets/smile.svg';
-// import wave from '../assets/wave.svg';
-// import realisticEye from '../assets/realisticEye.png';
-// import realisticSmile from '../assets/realisticSmile.png';
+import React, { useState, useEffect } from 'react'
+import smile from '../assets/smile.svg';
+import wave from '../assets/wave.svg';
+import realisticEye from '../assets/realisticEye.png';
+import realisticSmile from '../assets/realisticSmile.png';
 
 
 const Container = () => {
@@ -45,12 +45,12 @@ const Container = () => {
     var scaryMode = document.getElementById("scaryMode");
     // var leftEye = document.getElementById("leftEye");
     // var rightEye = document.getElementById("rightEye");
-    var mouth = document.getElementById("mouth");
-    var enterButton = document.getElementById("enterButton");
-    const inputText = document.getElementById("inputText");
-    const messagesDiv = document.getElementById("messages");
     
     function addBotMessage(responseText) {
+        var mouth = document.getElementById("mouth");
+        var enterButton = document.getElementById("enterButton");
+        var inputText = document.getElementById("inputText");
+        var messagesDiv = document.getElementById("messages");
         const userMessageDiv = document.createElement("div");
         userMessageDiv.classList.add("message");
         userMessageDiv.classList.add("botMessage");
@@ -65,10 +65,7 @@ const Container = () => {
         smile.style.opacity = 0;
         inputText.disabled = true;
     
-        var response;
-        
-        
-
+        var response = responseText;
         // response = "My name is PARAM, and I am an example of \"Parthificial Intelligence.\" This type of AI is based on the niche micro-celebrity you all know and love: \"Parth Shah,\" which means that my intelligence is modeled after his.";
         let index = 0;
     
@@ -95,15 +92,37 @@ const Container = () => {
                  
     
     function addUserMessage() {
-        if (inputText.value.length > 0) {
-            const userMessageDiv = document.createElement("div");
-            userMessageDiv.classList.add("message");
-            userMessageDiv.classList.add("userMessage");
-            userMessageDiv.innerText = inputText.value;
-            messagesDiv.appendChild(userMessageDiv);
-            addBotMessage();
-            inputText.value = '';
-        }
+        var mouth = document.getElementById("mouth");
+        var enterButton = document.getElementById("enterButton");
+        var inputText = document.getElementById("inputText");
+        var messagesDiv = document.getElementById("messages");
+        
+        var botResponse;
+        
+        fetch("/test", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ payload: inputText.value }),
+        })
+          .then((response) => response.text())
+          .then((text) => {
+            botResponse = text;
+            if (inputText.value.length > 0) {
+                const userMessageDiv = document.createElement("div");
+                userMessageDiv.classList.add("message");
+                userMessageDiv.classList.add("userMessage");
+                userMessageDiv.innerText = inputText.value;
+                messagesDiv.appendChild(userMessageDiv);
+                console.log(botResponse);
+                addBotMessage(botResponse);
+                inputText.value = '';
+            }
+          })
+          .catch((error) => console.error(error));
+        
+        
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     
     }
@@ -113,41 +132,43 @@ const Container = () => {
             addUserMessage();
         }
     }
-
-
-
-
         
 
     return (
         <div id="wrapper">
-            <div id="voiceContainer">
-                <div class="button-container">
-                    <input type="checkbox" id="micButton" class="mic-checkbox"/>
-                    <label for="micButton" class="mic-button">
-                    <div class='mic'>
-                        <div class='mic-button-loader'>
+        <div id="voiceContainer">
+            <div id="mainWindow" class="mainWindow">
+                <div id="facePanel" class="facePanel">
+                    <div id="face" class="face">
+                        <div id="leftEye" data-staring="false" class="eye leftEye"></div>
+                        <div id="rightEye" data-staring="false" class="eye rightEye"></div>
+                        <div id="mouth" class="mouth">
+                            <img id="smile" class="smile" src={smile}/>
+                            <img id="mouthWave1" class="mouthWave" src={wave} />
+                            <img id="mouthWave2" class="mouthWave" src={wave} />
+                            <img id="mouthWave3" class="mouthWave" src={wave} />
+                            <img id="mouthWave4" class="mouthWave" src={wave} />
                         </div>
-                        <div class="mic-base">
-                        </div>
-                        </div>
-                    <div class="button-message">
-                        <span>
-                            PRESS TO TALK
-                        </span>
                     </div>
-                    </label>
                 </div>
+                <div id="leftPanel" class="panel leftPanel">
+                    {/* <button id="colorMode" class="button">Dark Mode</button> */}
+                    {/* <button id="scaryMode" class="button">Scary Mode</button> */}
+                </div>
+                <div id="rightPanel" class="panel rightPanel"></div>
+                </div>
+
             </div>
             <div id="textPanel" class="textPanel">
                     <div id="messages" class="messages">
                     </div>
                     <div id="userInput" class="userInput">
                         <input id="inputText" class="inputText" onKeyDown={enterPress}/>
-                        <button id="enterButton" class="enterButton" onClick={addBotMessage}></button>
+                        <button id="enterButton" class="enterButton" onClick={addUserMessage}></button>
                     </div>
             </div>
         </div>
+        
     );
 }
  
