@@ -1,9 +1,9 @@
 // import '../scripts/scripts.js'
 import React, { useState, useEffect } from 'react';
-import smile from '../assets/smile.svg';
-import wave from '../assets/wave.svg';
-import realisticEye from '../assets/realisticEye.png';
-import realisticSmile from '../assets/realisticSmile.png';
+// import smile from '../assets/smile.svg';
+// import wave from '../assets/wave.svg';
+// import realisticEye from '../assets/realisticEye.png';
+// import realisticSmile from '../assets/realisticSmile.png';
 
 
 const Container = () => {
@@ -114,46 +114,30 @@ const Container = () => {
         }
     }
 
-    const [data, setData] = useState([{}]);
 
-    useEffect(() => {
-        fetch('/test').then(
-            data => {
-            setData(data)
-            // addUserMessage()
-            }
-            
-        )
-        }, [])
 
-        // response = data;
 
         
 
     return (
         <div id="wrapper">
-        <div id="voiceContainer">
-            <div id="mainWindow" class="mainWindow">
-                <div id="facePanel" class="facePanel">
-                    <div id="face" class="face">
-                        <div id="leftEye" data-staring="false" class="eye leftEye"></div>
-                        <div id="rightEye" data-staring="false" class="eye rightEye"></div>
-                        <div id="mouth" class="mouth">
-                            <img id="smile" class="smile" src={smile}/>
-                            <img id="mouthWave1" class="mouthWave" src={wave} />
-                            <img id="mouthWave2" class="mouthWave" src={wave} />
-                            <img id="mouthWave3" class="mouthWave" src={wave} />
-                            <img id="mouthWave4" class="mouthWave" src={wave} />
+            <div id="voiceContainer">
+                <div class="button-container">
+                    <input type="checkbox" id="micButton" class="mic-checkbox"/>
+                    <label for="micButton" class="mic-button">
+                    <div class='mic'>
+                        <div class='mic-button-loader'>
                         </div>
+                        <div class="mic-base">
+                        </div>
+                        </div>
+                    <div class="button-message">
+                        <span>
+                            PRESS TO TALK
+                        </span>
                     </div>
+                    </label>
                 </div>
-                <div id="leftPanel" class="panel leftPanel">
-                    {/* <button id="colorMode" class="button">Dark Mode</button> */}
-                    {/* <button id="scaryMode" class="button">Scary Mode</button> */}
-                </div>
-                <div id="rightPanel" class="panel rightPanel"></div>
-                </div>
-
             </div>
             <div id="textPanel" class="textPanel">
                     <div id="messages" class="messages">
@@ -164,7 +148,6 @@ const Container = () => {
                     </div>
             </div>
         </div>
-        
     );
 }
  
