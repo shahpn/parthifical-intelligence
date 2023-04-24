@@ -30,9 +30,9 @@ from twilio.rest import Client
 import numpy as np
 import tensorflow as tf
 
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
+# engine = pyttsx3.init('sapi5')
+# voices = engine.getProperty('voices')
+# engine.setProperty('voice', voices[1].id)
 
 
 
@@ -50,50 +50,55 @@ advising_data = ["Can you help me choose my classes for next semester?", "How do
                  "How do I apply for a co-op position in computer science?", "Can you provide information about scholarships available for computer science majors?", "What resources are available to help me plan my course schedule?", "Can you help me find information on graduate school opportunities in computer science?", "How can I get involved in a computer science club or organization?", "Can you provide me with information on the availability of career services for computer science majors?", "How do I request a letter of recommendation from a computer science professor?", "Can you tell me about the requirements for a minor in computer science?", "How can I get involved in undergraduate research in computer science?", "Can you provide me with information about the academic integrity policy in the computer science department?", "What is the process for appealing a grade in a computer science course?", "How do I register for a computer science course that is full?", "Can you provide me with information about the academic advising process for computer science majors?", "What is the process for applying for a teaching assistantship in computer science?", "Can you tell me about the process for applying to graduate school in computer science?", "What are the course requirements for graduation in computer science?", "How can I find out more about career opportunities in computer science?", "Can you provide me with information about the availability of tutoring services for computer science courses?", "What is the process for withdrawing from a computer science course?", "Can you tell me about the availability of summer courses in computer science?", "How can I get involved in community outreach programs in computer science?"]
 
 # Preprocess the training data by converting each word to a vector
-tokenizer = tf.keras.preprocessing.text.Tokenizer()
-tokenizer.fit_on_texts(course_data + history_data +
-                       location_data + advising_data)
-course_data = tokenizer.texts_to_sequences(course_data)
-history_data = tokenizer.texts_to_sequences(history_data)
-location_data = tokenizer.texts_to_sequences(location_data)
-advising_data = tokenizer.texts_to_sequences(advising_data)
+# tokenizer = tf.keras.preprocessing.text.Tokenizer()
+# tokenizer.fit_on_texts(course_data + history_data +
+#                        location_data + advising_data)
+# course_data = tokenizer.texts_to_sequences(course_data)
+# history_data = tokenizer.texts_to_sequences(history_data)
+# location_data = tokenizer.texts_to_sequences(location_data)
+# advising_data = tokenizer.texts_to_sequences(advising_data)
 
-# Convert the lists of sequences to a 2D numpy array
-course_data = tf.keras.preprocessing.sequence.pad_sequences(
-    course_data, maxlen=10)
-history_data = tf.keras.preprocessing.sequence.pad_sequences(
-    history_data, maxlen=10)
-location_data = tf.keras.preprocessing.sequence.pad_sequences(
-    location_data, maxlen=10)
-advising_data = tf.keras.preprocessing.sequence.pad_sequences(
-    advising_data, maxlen=10)
+# # Convert the lists of sequences to a 2D numpy array
+# course_data = tf.keras.preprocessing.sequence.pad_sequences(
+#     course_data, maxlen=10)
+# history_data = tf.keras.preprocessing.sequence.pad_sequences(
+#     history_data, maxlen=10)
+# location_data = tf.keras.preprocessing.sequence.pad_sequences(
+#     location_data, maxlen=10)
+# advising_data = tf.keras.preprocessing.sequence.pad_sequences(
+#     advising_data, maxlen=10)
 
-# Define the neural network model
-model = tf.keras.models.Sequential([
-    tf.keras.layers.Embedding(
-        len(tokenizer.word_index)+1, 64, input_length=10),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(len(categories), activation='softmax')
-])
+# # Define the neural network model
+# model = tf.keras.models.Sequential([
+#     tf.keras.layers.Embedding(
+#         len(tokenizer.word_index)+1, 64, input_length=10),
+#     tf.keras.layers.Flatten(),
+#     tf.keras.layers.Dense(64, activation='relu'),
+#     tf.keras.layers.Dense(len(categories), activation='softmax')
+# ])
 
-# Compile the model
-model.compile(loss='categorical_crossentropy',
-              optimizer='adam', metrics=['accuracy'])
+# # Compile the model
+# model.compile(loss='categorical_crossentropy',
+#               optimizer='adam', metrics=['accuracy'])
 
-# Train the model on the training data
-X = np.concatenate(
-    (course_data, history_data, location_data, advising_data), axis=0)
-y = np.array([[1, 0, 0, 0]] * len(course_data) +
-             [[0, 1, 0, 0]] * len(history_data) +
-             [[0, 0, 1, 0]] * len(location_data) +
-             [[0, 0, 0, 1]] * len(advising_data))
-model.fit(X, y, epochs=50)
+# # Train the model on the training data
+# X = np.concatenate(
+#     (course_data, history_data, location_data, advising_data), axis=0)
+# y = np.array([[1, 0, 0, 0]] * len(course_data) +
+#              [[0, 1, 0, 0]] * len(history_data) +
+#              [[0, 0, 1, 0]] * len(location_data) +
+#              [[0, 0, 0, 1]] * len(advising_data))
+# model.fit(X, y, epochs=50)
+
+# model.save('../flask-server/models')
+
 
 # Define a function to classify user input
 
 
 def classify_input(input_text):
+    model = model.load_model('../flask-server/models')
+    tokenizer = model.tokenizer
     input_sequence = tokenizer.texts_to_sequences([input_text])
     input_sequence = tf.keras.preprocessing.sequence.pad_sequences(
         input_sequence, maxlen=10)
