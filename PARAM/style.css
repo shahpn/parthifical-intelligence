@@ -49,6 +49,7 @@ main {
 
 .leftPanel {
     position: relative;
+    display: flex;
     background-color: var(--panelColor); 
     grid-row-start: 1;
     grid-column-start: 1;
@@ -58,6 +59,7 @@ main {
 
 .rightPanel {
     position: relative;
+    display: flex;
     background-color: var(--panelColor);  
     grid-row-start: 1;
     grid-column-start: 7;
