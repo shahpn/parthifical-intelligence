@@ -55,6 +55,7 @@ const Container = () => {
         userMessageDiv.classList.add("message");
         userMessageDiv.classList.add("botMessage");
         messagesDiv.appendChild(userMessageDiv);
+        userMessageDiv.style.whiteSpace = 'pre-wrap';
     
         const mouthWaves = mouth.querySelectorAll(".mouthWave");
         for (let i = 0; i < mouthWaves.length; i++) {
@@ -81,9 +82,10 @@ const Container = () => {
                 smile.style.opacity = 1;
                 return;
             }
-            const character = response[index];
-            const space = /^\s*$/.test(character) ? "&nbsp;" : character;
-            userMessageDiv.innerHTML += space;
+            // const character = response[index];
+            // const space = /^\s*$/.test(character) ? "&nbsp;" : character;
+            // userMessageDiv.innerHTML += space;
+            userMessageDiv.innerHTML += response[index];
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             index++;
         }, 100);
@@ -99,31 +101,65 @@ const Container = () => {
         
         var botResponse;
         
-        fetch("/test", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ payload: inputText.value }),
-        })
-          .then((response) => response.text())
-          .then((text) => {
-            botResponse = text;
-            if (inputText.value.length > 0) {
-                const userMessageDiv = document.createElement("div");
-                userMessageDiv.classList.add("message");
-                userMessageDiv.classList.add("userMessage");
-                userMessageDiv.innerText = inputText.value;
-                messagesDiv.appendChild(userMessageDiv);
-                console.log(botResponse);
-                addBotMessage(botResponse);
-                inputText.value = '';
-            }
+        var inputStr = String(inputText.value);
+
+        if (inputStr.includes('courses')) {
+          fetch("/get_courses", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ payload: inputText.value }),
           })
-          .catch((error) => console.error(error));
+            .then((response) => response.json())
+            .then((json) => {
+              botResponse = json;
+              if (inputText.value.length > 0) {
+                  const userMessageDiv = document.createElement("div");
+                  userMessageDiv.classList.add("message");
+                  userMessageDiv.classList.add("userMessage");
+                  userMessageDiv.innerText = inputText.value;
+                  messagesDiv.appendChild(userMessageDiv);
+                  console.log(Object.keys(botResponse))
+                  addBotMessage(Object.keys(botResponse).join('\n'));
+                  inputText.value = '';
+                  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+              }
+            })
+            .catch((error) => console.error(error));
+            return;
+        }
+        
+
+        else if (inputStr.includes('assignment')) {
+          fetch("/get_assignments", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ payload: inputText.value }),
+          })
+            .then((response) => response.text())
+            .then((text) => {
+              botResponse = text;
+              if (inputText.value.length > 0) {
+                  const userMessageDiv = document.createElement("div");
+                  userMessageDiv.classList.add("message");
+                  userMessageDiv.classList.add("userMessage");
+                  userMessageDiv.innerText = inputText.value;
+                  messagesDiv.appendChild(userMessageDiv);
+                  console.log(botResponse)
+                  addBotMessage(botResponse);
+                  inputText.value = '';
+                  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+              }
+            })
+            .catch((error) => console.error(error));
+            return;
+        }
+
         
         
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
     
     }
     
@@ -152,8 +188,8 @@ const Container = () => {
                     </div>
                 </div>
                 <div id="leftPanel" class="panel leftPanel">
-                    {/* <button id="colorMode" class="button">Dark Mode</button> */}
-                    {/* <button id="scaryMode" class="button">Scary Mode</button> */}
+                    {/* <button id="colorMode" class="button">Dark Mode</button>
+                    <button id="scaryMode" class="button">Scary Mode</button> */}
                 </div>
                 <div id="rightPanel" class="panel rightPanel"></div>
                 </div>
