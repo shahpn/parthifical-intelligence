@@ -47,7 +47,7 @@ const Container = () => {
       
     // Message adding
     // var leftEye = document.getElementById("leftEye");
-    // var rightEye = document.getElementById("rightEye");
+    // var rightEye = document.getElementById("rightEye");    
     
     function addBotMessage(responseText) {
         var mouth = document.getElementById("mouth");
@@ -118,7 +118,6 @@ const Container = () => {
             }
 
         }, 75);
-        
     }
         
                  

@@ -46,12 +46,14 @@ class Bulletin:
 
             course_links += f'\n\n{element.text}'
 
+            # driver.quit()
+
             return class_name.text, course_links
         else:
             return("No course names found.")
 
     def _search_history(self, input):
-        link = ['https://www.google.com/search?q=' + input.replace(' ', '+') + 'psu']
+        link = 'https://www.google.com/search?q=' + input.replace(' ', '+') + '+psu'
         return link
 
     def _search_location(self):
@@ -63,7 +65,47 @@ class Bulletin:
 
         if match:
                 professor_name = match.group(1)
-                link = ['https://www.abington.psu.edu/directory/results?keys=' + professor_name  +'&type=All']
-                return(link)
+                link = 'https://www.abington.psu.edu/directory/results?keys=' + professor_name  +'&type=All'
+                # return(link)
+
+                driver.get(link)
+
+                name = driver.find_element(By.XPATH, f"""//*[@id="main-layout"]/div/section/div/div/div/div[2]/div/table/tbody/tr/td[1]""")
+                email = driver.find_element(By.XPATH, f"""//*[@id="main-layout"]/div/section/div/div/div/div[2]/div/table/tbody/tr/td[2]""")
+                roles = driver.find_elements(By.XPATH, f"//div[contains(@class, 'paragraph paragraph--type--person-role paragraph--view-mode--default')]")
+                office = driver.find_element(By.XPATH, f"""//*[@id="main-layout"]/div/section/div/div/div/div[2]/div/table/tbody/tr/td[4]""")
+            
+                role = ""
+
+                if len(roles) == 1:
+                    role = roles[0].text
+                elif len(roles) > 1:
+                    for inner_div in roles:
+                        role += inner_div.text + ' | '
+
+                    role = role[:-3]
+                
+                     
+                a_tag = driver.find_element(By.XPATH, f"""//*[@id="main-layout"]/div/section/div/div/div/div[2]/div/table/tbody/tr/td[1]/a""")
+                link = a_tag.get_attribute('href')
+
+                name = name.text
+                email = email.text
+                office = office.text
+
+                
+                if name == "":
+                    name = 'None'
+                if email == "":
+                    email = 'None'
+                if role == "":
+                    role = 'None'
+                if office == "":
+                    office = 'None'
+
+                # driver.quit()
+
+                return f"Below is the following information for {name}:\n\tEmail: {email}\n\tRole(s): {role}\n\tOffice Location: {office}\n\nOr use the following link to get more information: {link}"
+
         else:
                 return(f"Professor not found.")

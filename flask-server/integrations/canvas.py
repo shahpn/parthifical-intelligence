@@ -112,9 +112,34 @@ class CanvasClass:
             else:
                 date_str = "No due date"
 
-            result_str += f"\t• {assignment.name} | Due at: {date_str}\n"
+            result_str += f"\t• {str(assignment.name).strip()} | Due at: {date_str}\n"
 
         return result_str
+    
+    # def _get_self_assignments(self, course_partial):
+    #     user =Canvas.get_current_user
+
+    #     sorted_assignments = sorted(course.get_assignments(),key = lambda a: a.due_at if a.due_at is not None else " ")
+    #     current_time = datetime.datetime.now()
+        
+    #     # print(sorted_assignments)
+
+    #     assignment_index = 0
+    #     while assignment_index < len(sorted_assignments) and (sorted_assignments[assignment_index].due_at is None or current_time > datetime.datetime.strptime(sorted_assignments[assignment_index].due_at, CANVAS_DATE_FORMAT)):
+    #         assignment_index += 1
+
+    #     # upcoming_assignments = sorted_assignments[assignment_index:min(assignment_index+5,len(sorted_assignments))]
+
+    #     result_str = f"These are the due dates for the following assignment(s):\n"
+    #     for assignment in sorted_assignments:
+    #         if assignment.due_at is not None:
+    #             date_str = pytz.utc.localize(datetime.datetime.strptime(assignment.due_at, CANVAS_DATE_FORMAT)).astimezone(EST).strftime(OUTPUT_DATE_FORMAT)
+    #         else:
+    #             date_str = "No due date"
+
+    #         result_str += f"\t• {assignment.name} | Due at: {date_str}\n"
+
+    #     return result_str
 
     # def _get_syllabus(self, course_partial):
     #     course_dict = self._get_courses()
