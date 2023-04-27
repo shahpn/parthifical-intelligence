@@ -15,19 +15,14 @@ from gtts import gTTS
 # import lionpath class
 from integrations.lionpath import Lionpath
 from integrations.canvas import CanvasClass
+from integrations.bulletin import Bulletin
 
-from flask_cors import CORS, cross_origin
 
-app = Flask(__name__, static_folder='client/build', static_url_path='')
-CORS(app)
-
-@app.route('/')
-@cross_origin
-def serve():
-    return send_from_directory(app.static_folder, 'index.html')
+app = Flask(__name__)
 
 lp = Lionpath()
 cvs = CanvasClass()
+bp = Bulletin()
 
 # Define the categories we want to classify user input into
 categories = ['course', 'history', 'location', 'advising']
@@ -118,21 +113,26 @@ def classify_input(input_text):
 
 
 @app.route('/userInput', methods=['POST'])
-@cross_origin
 def userInput():
     data = request.get_json()
     payload = data['payload']
-    print(classify_input(payload))
+    # print(classify_input(payload))
     if classify_input(payload) == 'course':
         course_matches = re.findall(r'(CMPSC|IST)\s?(\d{3})(w?)', payload, re.IGNORECASE)
 
         course_name = ""
-        if course_matches:
+        if course_matches and 'all' not in payload:
             course_name = [match[0].upper() + ' ' + match[1] + match[2] for match in course_matches]
             return cvs._get_assignments(f'{course_name[0]}')
+        elif course_matches and 'all' in payload:
+            course_name = [match[0].upper() + ' ' + match[1] + match[2] for match in course_matches]
+            return cvs._get_all_assignments(f'{course_name[0]}')
         else:
             return "This chat bot is currently only optimized for CMPSC and IST class codes"
-    
+    elif classify_input(payload) == 'location':
+        return bp._search_location()
+    else:
+        lp.get_semester()
 	# if 'course':
 	# 	dudes = lp.get_semester()
 	# 	print(dudes)

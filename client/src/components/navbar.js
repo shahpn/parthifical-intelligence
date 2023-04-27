@@ -41,7 +41,9 @@ const Navbar = () => {
                         </div>
                     </li>
                 </ul>
-                <a href="/"><img id="hra" alt='hra' src={Parth}></img></a>
+                <div className="logo">
+                  <a href="/">Parthificial Intelligence</a>
+                </div>
             </header>
         </nav>
       );

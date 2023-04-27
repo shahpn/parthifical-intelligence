@@ -513,6 +513,8 @@ input {
   height: 30vh;
 
 
+
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -619,8 +621,9 @@ input {
 
 .face {
   position: relative;
-  width: 800px;
-  height: 70%;
+  --name: 150px;
+  width: calc(4 * var(--name));
+  height: calc(2 * var(--name));
   /* max-width: 25rem;
   max-height: 25rem; */
   border-radius: 20px;
