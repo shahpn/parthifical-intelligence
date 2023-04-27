@@ -42,8 +42,11 @@ class CanvasClass:
             if course_partial in key:
                 course_id = course_dict[key]
                 
+        try:
+            course = self.canvas.get_course(course_id)
+        except:
+            return "Course not found or not currently enrolled"
 
-        course = self.canvas.get_course(course_id)
         sorted_assignments = sorted(course.get_assignments(),key = lambda a: a.due_at if a.due_at is not None else " ")
         current_time = datetime.datetime.now()
         
@@ -55,6 +58,38 @@ class CanvasClass:
 
         result_str = f"The following assignment(s) are due for {course.name[:9]}:\n"
         for assignment in upcoming_assignments:
+            # due_date = pytz.utc.localize(datetime.datetime.strptime(assignment.due_at, CANVAS_DATE_FORMAT))
+            # due_date_est = due_date.astimezone(EST)
+            # result_str += f"{assignment.name} | {due_date} EST\n"
+            
+            due_date = pytz.utc.localize(datetime.datetime.strptime(assignment.due_at, CANVAS_DATE_FORMAT))
+            due_date_est = due_date.astimezone(EST)
+
+            result_str += f"\t• {assignment.name} | Due on: {due_date_est.strftime(OUTPUT_DATE_FORMAT)}\n"
+
+        return result_str
+    
+    def _get_all_assignments(self, course_partial):
+        course_dict = self._get_courses()
+        course_id = 0
+
+        for key in course_dict.keys():
+            if course_partial in key:
+                course_id = course_dict[key]
+                
+
+        course = self.canvas.get_course(course_id)
+        sorted_assignments = sorted(course.get_assignments(),key = lambda a: a.due_at if a.due_at is not None else " ")
+        current_time = datetime.datetime.now()
+        
+        assignment_index = 0
+        while assignment_index < len(sorted_assignments) and (sorted_assignments[assignment_index].due_at is None or current_time > datetime.datetime.strptime(sorted_assignments[assignment_index].due_at, CANVAS_DATE_FORMAT)):
+            assignment_index += 1
+
+        # upcoming_assignments = sorted_assignments[assignment_index:min(assignment_index+5,len(sorted_assignments))]
+
+        result_str = f"The following assignment(s) are due for {course.name[:9]}:\n"
+        for assignment in sorted_assignments:
             # due_date = pytz.utc.localize(datetime.datetime.strptime(assignment.due_at, CANVAS_DATE_FORMAT))
             # due_date_est = due_date.astimezone(EST)
             # result_str += f"{assignment.name} | {due_date} EST\n"

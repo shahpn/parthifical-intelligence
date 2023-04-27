@@ -103,37 +103,8 @@ const Container = () => {
         
         var inputStr = String(inputText.value);
 
-        if (inputStr.includes('courses')) {
-          fetch("/get_courses", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ payload: inputText.value }),
-          })
-            .then((response) => response.json())
-            .then((json) => {
-              botResponse = json;
-              if (inputText.value.length > 0) {
-                  const userMessageDiv = document.createElement("div");
-                  userMessageDiv.classList.add("message");
-                  userMessageDiv.classList.add("userMessage");
-                  userMessageDiv.innerText = inputText.value;
-                  messagesDiv.appendChild(userMessageDiv);
-                  console.log(Object.keys(botResponse))
-                  addBotMessage(Object.keys(botResponse).join('\n'));
-                  inputText.value = '';
-                  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-              }
-            })
-            .catch((error) => console.error(error));
-            return;
-        }
-        
-
-        else if (inputStr.includes('assignment')) {
-          fetch("/get_assignments", {
-            method: "POST",
+        fetch("/userInput", {
+          method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
@@ -156,7 +127,90 @@ const Container = () => {
             })
             .catch((error) => console.error(error));
             return;
-        }
+
+        // if (inputStr.includes('courses')) {
+        //   fetch("/get_courses", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({ payload: inputText.value }),
+        //   })
+        //     .then((response) => response.json())
+        //     .then((json) => {
+        //       botResponse = json;
+        //       if (inputText.value.length > 0) {
+        //           const userMessageDiv = document.createElement("div");
+        //           userMessageDiv.classList.add("message");
+        //           userMessageDiv.classList.add("userMessage");
+        //           userMessageDiv.innerText = inputText.value;
+        //           messagesDiv.appendChild(userMessageDiv);
+        //           console.log(Object.keys(botResponse))
+        //           addBotMessage(Object.keys(botResponse).join('\n'));
+        //           inputText.value = '';
+        //           messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        //       }
+        //     })
+        //     .catch((error) => console.error(error));
+        //     return;
+        // }
+
+        // else if (inputStr.includes('all assignments')) {
+        //   fetch("/get_assignments", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({ payload: inputText.value }),
+        //   })
+        //     .then((response) => response.text())
+        //     .then((text) => {
+        //       botResponse = text;
+        //       if (inputText.value.length > 0) {
+        //           const userMessageDiv = document.createElement("div");
+        //           userMessageDiv.classList.add("message");
+        //           userMessageDiv.classList.add("userMessage");
+        //           userMessageDiv.innerText = inputText.value;
+        //           messagesDiv.appendChild(userMessageDiv);
+        //           console.log(botResponse)
+        //           addBotMessage(botResponse);
+        //           inputText.value = '';
+        //           messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        //       }
+        //     })
+        //     .catch((error) => console.error(error));
+        //     return;
+        // }
+        
+
+        // else if (inputStr.includes('assignment')) {
+        //   fetch("/get_assignments", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({ payload: inputText.value }),
+        //   })
+        //     .then((response) => response.text())
+        //     .then((text) => {
+        //       botResponse = text;
+        //       if (inputText.value.length > 0) {
+        //           const userMessageDiv = document.createElement("div");
+        //           userMessageDiv.classList.add("message");
+        //           userMessageDiv.classList.add("userMessage");
+        //           userMessageDiv.innerText = inputText.value;
+        //           messagesDiv.appendChild(userMessageDiv);
+        //           console.log(botResponse)
+        //           addBotMessage(botResponse);
+        //           inputText.value = '';
+        //           messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        //       }
+        //     })
+        //     .catch((error) => console.error(error));
+        //     return;
+        // }
+
+        
 
         
         

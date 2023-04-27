@@ -1,39 +1,30 @@
-import ctypes
-import datetime
-import json
-import operator
-import os
-import random
-import shutil
-import smtplib
-import subprocess
-import time
-import tkinter
-import webbrowser
 from urllib.request import urlopen
+import re
 
-import feedparser
 import numpy as np
-import pyjokes
-import pyttsx3
-import requests
-import selenium
-import speech_recognition as sr
 import tensorflow as tf
 import wikipedia
 import win32com.client as wincl
-import winshell
-import wolframalpha
 from bs4 import BeautifulSoup
 from clint.textui import progress
 from ecapture import ecapture as ec
 from flask import Flask, jsonify, request
+from flask.helpers import send_from_directory
 from gtts import gTTS
 
 # import lionpath class
 from integrations.lionpath import Lionpath
 from integrations.canvas import CanvasClass
 
+from flask_cors import CORS, cross_origin
+
+app = Flask(__name__, static_folder='client/build', static_url_path='')
+CORS(app)
+
+@app.route('/')
+@cross_origin
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
 lp = Lionpath()
 cvs = CanvasClass()
@@ -79,18 +70,18 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(len(categories), activation='softmax')
 ])
 
-# # Compile the model
-# model.compile(loss='categorical_crossentropy',
-#               optimizer='adam', metrics=['accuracy'])
+# Compile the model
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam', metrics=['accuracy'])
 
-# # Train the model on the training data
-# X = np.concatenate(
-#     (course_data, history_data, location_data, advising_data), axis=0)
-# y = np.array([[1, 0, 0, 0]] * len(course_data) +
-#              [[0, 1, 0, 0]] * len(history_data) +
-#              [[0, 0, 1, 0]] * len(location_data) +
-#              [[0, 0, 0, 1]] * len(advising_data))
-# model.fit(X, y, epochs=50)
+# Train the model on the training data
+X = np.concatenate(
+    (course_data, history_data, location_data, advising_data), axis=0)
+y = np.array([[1, 0, 0, 0]] * len(course_data) +
+             [[0, 1, 0, 0]] * len(history_data) +
+             [[0, 0, 1, 0]] * len(location_data) +
+             [[0, 0, 0, 1]] * len(advising_data))
+model.fit(X, y, epochs=50)
 
 # model.save('../flask-server/models')
 
@@ -98,8 +89,8 @@ model = tf.keras.models.Sequential([
 # Define a function to classify user input
 
 def classify_input(input_text):
-    model = model.load_model('../flask-server/models')
-    tokenizer = model.tokenizer
+    # model = model.load_model('../flask-server/models')
+    # tokenizer = model.tokenizer
     input_sequence = tokenizer.texts_to_sequences([input_text])
     input_sequence = tf.keras.preprocessing.sequence.pad_sequences(
         input_sequence, maxlen=50)
@@ -125,28 +116,37 @@ def classify_input(input_text):
 # # piss
 # print("test")
 
-app = Flask(__name__)
-
-
 
 @app.route('/userInput', methods=['POST'])
-def test():
-	
-	
-	data = request.get_json()
-	payload = data['payload']
-	print(classify_input(payload))
+@cross_origin
+def userInput():
+    data = request.get_json()
+    payload = data['payload']
+    print(classify_input(payload))
+    if classify_input(payload) == 'course':
+        course_matches = re.findall(r'(CMPSC|IST)\s?(\d{3})(w?)', payload, re.IGNORECASE)
+
+        course_name = ""
+        if course_matches:
+            course_name = [match[0].upper() + ' ' + match[1] + match[2] for match in course_matches]
+            return cvs._get_assignments(f'{course_name[0]}')
+        else:
+            return "This chat bot is currently only optimized for CMPSC and IST class codes"
     
-	# if classify_input(payload) == 'course':
+	# if 'course':
 	# 	dudes = lp.get_semester()
 	# 	print(dudes)
         
-	return classify_input(payload)
+    return classify_input(payload)
 		
 
 @app.route('/get_assignments', methods=['POST'])
 def get_assignment():
     return cvs._get_assignments('CMPSC 470')
+
+@app.route('/get_all_assignments', methods=['POST'])
+def get_all_assignments():
+    return cvs._get_all_assignments('CMPSC 470')
 
 @app.route('/get_courses', methods=['POST'])
 def get_courses():
@@ -155,4 +155,4 @@ def get_courses():
 		
 		
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
