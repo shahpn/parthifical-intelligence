@@ -13,6 +13,17 @@
 <body>
     <main>
         <div id="mainWindow" class="mainWindow">
+            <div class="textMessage">
+                <div class="messageBox">
+                    <div class="messageBar">
+                        <div class="messageTitle">About PARAM</div>
+                        <div class="closeMessage">X</div>
+                    </div>
+                    <div class="messageBody">
+                        <p class="messageText"><span class="importantText">PARAM</span> is a project put together by several CMPSC 445 Students at Penn State Abington! We were tasked with utilizing Machine Learning in a creative way, and we had the fantastic idea of building an AI chatbot. We wanted to build a chatbot to help advise Penn State Students, and thus, <span class="importantText">PARAM</span> was born! <span class="importantText">PARAM</span> can help you learn more about classes you plan to take, help you find things on campus, keep up to date with your assignments, and even contact your professors!</p>
+                    </div>
+                </div>
+            </div>
             <div id="facePanel" class="facePanel">
                 <div id="face" class="face">
                     <div id="leftEye" data-staring="false" class="eye leftEye"></div>
@@ -27,10 +38,24 @@
                 </div>
             </div>
             <div id="leftPanel" class="panel leftPanel">
-                <button id="colorMode" class="button">Dark Mode</button>
-                <button id="scaryMode" class="button">Scary Mode</button>
+                <div class="wrapper">
+                    <div class="logo">Param</div>
+                    <div class="instructions"><span class="textTitle">Instructions: </span>Simply type your message in the bar at the bottom of your screen, and then hit enter! <span class="importantText">PARAM</span> will respond to the best of its ability!</div>
+                    <div class="controls">
+                        <button id="colorMode" class="pButton">Dark Mode</button>
+                        <button id="userPreferences" class="pButton">Preferences</button>
+                        <button id="cookies" class="pButton">Cookies</button>
+                        <button id="profanity" class="pButton">Profanity</button>
+                        <button id="betaJoin" class="pButton">Join Beta</button>
+                        <button id="aboutProject" class="pButton">About</button>
+                    </div>
+                </div>
             </div>
-            <div id="rightPanel" class="panel rightPanel"></div>
+            <div id="rightPanel" class="panel rightPanel">
+                <div class="wrapper">
+                    <div class="updates"><span class="textTitle">Updates: </span><span class="importantText">May 2nd, 2023 - Beta Release:</span> PARAM can now access the PSU Bulletin to help you find out more about any CMPSC or IST course you wish!</div>
+                </div>
+            </div>
             <div id="textPanel" class="textPanel">
                 <div id="messages" class="messages">
                 </div>

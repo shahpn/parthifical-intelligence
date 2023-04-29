@@ -105,14 +105,16 @@ document.addEventListener('DOMContentLoaded', function() {
             document.documentElement.style.setProperty('--userMessageColor', '#262638');
             document.documentElement.style.setProperty('--botMessageColor', '#3b2438');
             document.documentElement.style.setProperty('--messageTextColor', '#ffffff');
+            document.documentElement.style.setProperty('--textBoxColor', '#474545');
             colorMode.innerText = "Light Mode"
         } else {
             document.documentElement.style.setProperty('--paramBGColor', '#c4cccc');
-            document.documentElement.style.setProperty('--panelColor', '#a8a7a7');
+            document.documentElement.style.setProperty('--panelColor', '#fdfdfd');
             document.documentElement.style.setProperty('--chatColor', '#e3e8e8');
             document.documentElement.style.setProperty('--userMessageColor', '#6a6b9e');
             document.documentElement.style.setProperty('--botMessageColor', '#ba72b0');
             document.documentElement.style.setProperty('--messageTextColor', '#000000');
+            document.documentElement.style.setProperty('--textBoxColor', '#a8a7a7');
             colorMode.innerText = "Dark Mode"
         }
     });
@@ -154,5 +156,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 scaryMode.innerText = "Scary Mode"
             }
         });
+    }
+});
+
+// About button functionality
+document.addEventListener('DOMContentLoaded', function() {
+    var aboutProject = document.getElementById("aboutProject");
+    var messageBox = document.getElementsByClassName("textMessage")[0];
+    
+    if (aboutProject && messageBox) {
+        aboutProject.addEventListener("click", function(){
+            messageBox.style.left = '0px';
+        });
+    }
+});
+
+// Close message pop-ups
+document.addEventListener('DOMContentLoaded', function() {
+    var closeMessage = document.getElementsByClassName("closeMessage")[0];
+    var messageBox = document.getElementsByClassName("textMessage")[0];
+
+    if (closeMessage && messageBox) {
+        closeMessage.addEventListener("click", function(){
+            messageBox.style.left = '999999px';
+        });
+    }
+});
+
+// Close message pop-ups
+document.addEventListener('DOMContentLoaded', function() {
+    var closeMessage = document.getElementsByClassName("closeMessage")[0];
+    var messageBox = document.getElementsByClassName("textMessage")[0];
+
+    if (closeMessage && messageBox) {
+        messageBox.style.left = '0px';
     }
 });
