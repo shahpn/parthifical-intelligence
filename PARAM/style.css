@@ -328,7 +328,7 @@ main {
 }
 
 .pButton:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 .textTitle {
@@ -352,7 +352,7 @@ main {
     justify-content: center;
     align-items: center;
     inset: 0;
-    left: 0;
+    left: 999999px;
     margin: 1rem;
     height: calc(100% - 2rem);
     width: calc(100% - 2em);
