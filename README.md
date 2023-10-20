@@ -1,4 +1,7 @@
 # parthifical-intelligence 💖
+
+[445_Final_Presentation (1).pptx](https://github.com/shahpn/parthifical-intelligence/files/13059154/445_Final_Presentation.1.pptx)
+
 Assistant name: Param
 
 Objective: We built PARAM with the goal of creating a modular AI. 
